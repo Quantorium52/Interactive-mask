@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TakeItems : MonoBehaviour
 {
     public float TimeToTake = 5;
+    public Image ImgTimer;
     
     private float Timer;
 
@@ -30,7 +32,13 @@ public class TakeItems : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             Enemy = null;
+            ImgTimer.fillAmount = 0;
         }
+    }
+
+    private void Start()
+    {
+        ImgTimer.fillAmount = 0;
     }
 
     private void Update()
@@ -38,6 +46,8 @@ public class TakeItems : MonoBehaviour
         if (Enemy && Timer > 0)
         {
             Timer -= Time.deltaTime;
+
+            ImgTimer.fillAmount = Timer / TimeToTake;
         }
         
         else if (Enemy && Timer <= 0)
@@ -51,8 +61,6 @@ public class TakeItems : MonoBehaviour
 
     private void Take()
     {
-        print("Took");
-        
         TakenObjects.Add(Enemy);
         
         Enemy.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
