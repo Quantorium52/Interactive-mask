@@ -1,47 +1,63 @@
 using System;
-using System.Timers;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TakeItems : MonoBehaviour
 {
-    public float TimeToTake;
+    public float TimeToTake = 5;
     
-    [SerializeField]
     private float Timer;
-    private bool IsTriggering = false;
+
+    private GameObject Enemy;
+    public GameObject PoadingbarPoint;
+    
+    public float DistanceBetweenTakenObjects;
+
+    [SerializeField]
+    private List<GameObject> TakenObjects;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Enemy"))
         {
+            Enemy = other.gameObject;
             Timer = TimeToTake;
-            IsTriggering = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Enemy"))
         {
-            IsTriggering = false;
+            Enemy = null;
         }
     }
 
     private void Update()
     {
-        if (IsTriggering && Timer > 0)
+        if (Enemy && Timer > 0)
         {
             Timer -= Time.deltaTime;
         }
         
-        else if (IsTriggering && Timer <= 0)
+        else if (Enemy && Timer <= 0)
         {
-            Take();
+            if (!TakenObjects.Contains(Enemy))
+            {
+                Take();
+            }
         }
     }
 
     private void Take()
     {
-        Destroy(this.gameObject);
+        print("Took");
+        
+        TakenObjects.Add(Enemy);
+        
+        Enemy.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
+        
+        Enemy.transform.position = PoadingbarPoint.transform.position;
+        PoadingbarPoint.transform.position += new Vector3(DistanceBetweenTakenObjects, 0, 0);
     }
 }
