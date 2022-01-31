@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Podium : MonoBehaviour
 {
     public SpriteRenderer PodiumEnemy;
-    public Sprite[] EnemieSprites;
+    public List<Sprite> EnemieSprites;
 
     public Image SwitchesTimer;
     public float TimeBetweenSwitchSprites = 10;
@@ -36,8 +36,19 @@ public class Podium : MonoBehaviour
 
     public void SwitchSprite()
     {
-        PodiumEnemy.sprite = EnemieSprites[Random.Range(0, EnemieSprites.Length)];
+        if(EnemieSprites.Count == 0)
+        {
+            Win();
+            return;
+        }
+        PodiumEnemy.sprite = EnemieSprites[Random.Range(0, EnemieSprites.Count)];
         Player.SwitchPodiumSprite(PodiumEnemy.sprite);
         TimerSwitchs = TimeBetweenSwitchSprites;
+    }
+
+    public void Win()
+    {
+        //TODO smth after win
+        print("Winnnnnnnnnnnner");
     }
 }

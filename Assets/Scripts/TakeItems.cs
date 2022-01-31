@@ -101,6 +101,7 @@ public class TakeItems : MonoBehaviour
 
     private void Loose()
     {
+        //TODO smth after loose
         print("Loooooooooser");
     }
 
@@ -114,6 +115,8 @@ public class TakeItems : MonoBehaviour
         PoadingbarPoint.transform.position += new Vector3(DistanceBetweenTakenObjects, 0, 0);
 
         CountTaken.text = TakenObjects.Count.ToString();
+
+        podium.EnemieSprites.Remove(Enemy.GetComponent<SpriteRenderer>().sprite);
     }
 
     public void SwitchPodiumSprite(Sprite newPodiumSprite)
